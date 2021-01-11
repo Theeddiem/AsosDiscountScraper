@@ -15,9 +15,8 @@ app.use(express.static(pathh));
 const PORT = 4000;
 
 app.listen(PORT, () => {
-	console.log(`Listenning on porst ${PORT}`);
+	console.log(`Listenning on http://localhost:${PORT}`);
 });
-
 var s = "https://www.asos.com/men/sale/jackets-coats/cat/?cid=2112&ctaref=shop|jacketscoats|mw_hp_sale&currentpricerange=750-44890&refine=size_eu:1873,1848|currentprice:750%3C7170";
 
 // var reuslts = s.split("/");
