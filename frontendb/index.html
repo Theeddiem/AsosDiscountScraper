@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="style.css" />
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+			integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+			crossorigin="anonymous"
+		/>
+		<title>Asos</title>
+	</head>
+	<body>
+		<div class="nav-bar">
+			<div class="top-nav-bar"><input id="link-scrape" class="btn btn-light" placeholder="Link To Scrape.." /> <button type="button" class="btn btn-success" id="submit-btn">Submit</button></div>
+
+			<div class="bot-nav-bar">
+				<div class="custom-select-div">
+					<select class="form-select" id="select-order">
+						<option value="sort">Sort</option>
+						<option value="discount">By Discount</option>
+						<option value="orginal">By Orginal Price</option>
+						<option value="discountImprov">By Discount Improvment</option>
+						<option value="newest">Newest First</option>
+					</select>
+				</div>
+				<div class="custom-select-div">
+					<select class="form-select" id="recently searched">
+						<option selected>Recently Searched</option>
+					</select>
+				</div>
+				<input id="search input" class="btn btn-light" placeholder="Search..." />
+			</div>
+		</div>
+
+		<div id="loader"></div>
+		<h1 id="styles-found" class="display-6"></h1>
+		<div class="grid-container">
+			<div class="container-fluid"></div>
+		</div>
+
+		<script type="module" src="index.js"></script>
+	</body>
+</html>

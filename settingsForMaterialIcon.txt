@@ -1,0 +1,17 @@
+{
+	"workbench.iconTheme": "material-icon-theme",
+	"explorer.compactFolders": false,
+	"typescript.updateImportsOnFileMove.enabled": "always",
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"editor.formatOnSave": true,
+	"material-icon-theme.folders.color": "#90a4ae",
+	"material-icon-theme.folders.associations": {
+		"backend": "Api",
+		"negative": "private",
+		"postive": "coverage"
+	}
+}
+
+
+to set those settings  go to settings go to settgins in vs code serach for material-cion theme eddit settings.json file
+https://marketplace.visualstudio.com/items?itemName=PKief.material-icon-theme
