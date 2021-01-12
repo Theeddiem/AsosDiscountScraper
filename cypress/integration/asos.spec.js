@@ -99,6 +99,7 @@ describe('asos', () => {
 							newPrice: newPrice,
 							discount: discount,
 							url: url,
+							orderId: j,
 							imgUrl: imgUrl,
 							changedBy: 0,
 						});
