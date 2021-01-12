@@ -65,49 +65,49 @@ describe('asos', () => {
 			let time = 1600 * loops;
 			cy.get('.tlbAWm8').click();
 			cy.scrollTo('top', { duration: time, easing: 'linear' });
+			asosPage.discountList().then((elms) => {
+				for (let discountValue = 99; discountValue >= 30; discountValue--) {
+					for (let j = 0; j < elms.length; j++) {
+						const element = elms[j];
+						if (element.innerHTML.includes(discountValue)) {
+							// console.log("hello", element.parentNode.children);
+							let imgUrl = element.parentNode.children[0].lastChild.currentSrc;
+							// console.log(element.parentNode.attributes);
+							// console.log(element.parentNode.children[3].ownderDocument);
+							// console.log(element.parentNode.children[0].childNodes[0].currentSrc);
+							if (imgUrl === undefined) {
+								imgUrl = element.parentNode.children[0].childNodes[0].currentSrc;
+							}
+							let description = element.parentNode.children[1].outerText;
+							//let lastModified = element.parentNode.children[0].ownerDocument.lastModified;
+							let orginalPrice = Math.floor(
+								element.parentNode.children[2].innerText
+									.split('руб. ')[1]
+									.split('.')[0]
+									.replace(/[^0-9]/g, '')
+							);
+							let newPrice = Math.floor(
+								element.parentNode.children[2].innerText
+									.split('руб. ')[2]
+									.split('.')[0]
+									.replace(/[^0-9]/g, '')
+							);
 
-			cy.get('._3TqU78D').then((elms) => {
-				// for (let discountValue = 99; discountValue >= 99; discountValue--) {
-				for (let j = 0; j < elms.length; j++) {
-					const element = elms[j].children;
-					let orginalPrice = Math.floor(
-						element[2].innerText
-							.split('руб. ')[1]
-							.split('.')[0]
-							.replace(/[^0-9]/g, '')
-					);
-					let newPrice = Math.floor(
-						element[2].innerText
-							.split('руб. ')[2]
-							.split('.')[0]
-							.replace(/[^0-9]/g, '')
-					);
-					let discount = Math.floor(((orginalPrice - newPrice) / orginalPrice) * 100);
-
-					if (discount > 30) {
-						let description = element[1].outerText;
-						let url = element[1].parentNode.href;
-						let imgUrl = element[0].lastChild.currentSrc;
-						//let url = element.parentElement.href
-						if (imgUrl === undefined) {
-							imgUrl = element[0].childNodes[0].currentSrc;
+							arr.push({
+								description: description,
+								orginalPrice: orginalPrice,
+								newPrice: newPrice,
+								discount: discountValue,
+								orderId: j,
+								url: element.parentElement.href,
+								imgUrl: imgUrl,
+								changedBy: 0,
+							});
 						}
-
-						arr.push({
-							description: description,
-							orginalPrice: orginalPrice,
-							newPrice: newPrice,
-							discount: discount,
-							url: url,
-							imgUrl: imgUrl,
-							changedBy: 0,
-						});
 					}
 				}
 				const pathh = path.join(__dirname + `/../backend/scrapedData/${recentlySeacrhedFileName}.json`);
-				console.log('this is arr', arr);
 				cy.writeFile(pathh, JSON.stringify(arr));
-				// }
 			});
 		});
 	});

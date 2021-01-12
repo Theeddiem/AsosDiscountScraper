@@ -1,24 +1,24 @@
-import AsosPage from "../AsosPage";
-const path = require("path");
-describe("asos", () => {
+import AsosPage from '../AsosPage';
+const path = require('path');
+describe('asos', () => {
 	const asosPage = new AsosPage();
 	let url;
 	let arr = [];
 
-	Cypress.on("uncaught:exception", (err, runnable) => {
+	Cypress.on('uncaught:exception', (err, runnable) => {
 		// returning false here prevents Cypress from
 		// failing the test
 		return false;
 	});
 
 	before(() => {
-		const pathh = path.join(__dirname + "/../backend/urlToScrape.txt");
+		const pathh = path.join(__dirname + '/../backend/urlToScrape.txt');
 		cy.readFile(pathh).then((file) => {
 			url = file;
 		});
 	});
 
-	it("asos", () => {
+	it('asos', () => {
 		// full 80 reuslts
 		//let url = "https://www.asos.com/men/sale/jackets-coats/cat/?cid=2112&currentpricerange=850-44890&r=1&refine=size_eu:1848|currentprice:850%3C1630&xaffid=8779";
 
@@ -34,14 +34,45 @@ describe("asos", () => {
 		// boots only 42
 		//let url = "https://www.asos.com/men/sale/shoes-trainers/cat/?cid=1935&ctaref=cat_header&currentpricerange=450-21490&refine=attribute_1047:8585|size_eu:2337";
 
-		cy.setCookie("browseSizeSchema", "EU");
-		cy.setCookie("browseCurrency", "RUB");
-		cy.setCookie("browseCountry", "TR");
-		cy.setCookie("browseLanguage", "TR");
+		cy.setCookie('browseSizeSchema', 'EU');
+		cy.setCookie('browseCurrency', 'RUB');
+		cy.setCookie('browseCountry', 'TR');
+		cy.setCookie('browseLanguage', 'TR');
 		cy.visit(url);
-		var reuslts = url.split("/");
+		var reuslts = url.split('/');
 		var recentlySeacrhedName = `${reuslts[3]} - ${reuslts[5]}`;
-		console.log(recentlySeacrhedName);
+
+		cy.get('._3TqU78D').then((elms) => {
+			// for (let discountValue = 99; discountValue >= 99; discountValue--) {
+			for (let j = 0; j < elms.length; j++) {
+				const element = elms[j].children;
+				console.log(element);
+				let orginalPrice = Math.floor(
+					element[2].innerText
+						.split('руб. ')[1]
+						.split('.')[0]
+						.replace(/[^0-9]/g, '')
+				);
+				let newPrice = Math.floor(
+					element[2].innerText
+						.split('руб. ')[2]
+						.split('.')[0]
+						.replace(/[^0-9]/g, '')
+				);
+				let discount = Math.floor(((orginalPrice - newPrice) / orginalPrice) * 100);
+
+				if (discount > 30) {
+					let description = element[1].outerText;
+					let url = element[1].parentNode.href;
+					let imgUrl = element[0].lastChild.currentSrc;
+					//let url = element.parentElement.href
+					if (imgUrl === undefined) {
+						imgUrl = element[0].childNodes[0].currentSrc;
+					}
+				}
+			}
+			// }
+		});
 	});
 	// cy.visit(url);
 	// asosPage.sortBySelect().click();

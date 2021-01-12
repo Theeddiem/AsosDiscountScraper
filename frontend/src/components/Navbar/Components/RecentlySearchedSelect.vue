@@ -35,6 +35,7 @@ export default {
 				this.$emit('updateParentUrl', urlToPaste);
 				console.log(this.currentSelect);
 				this.$store.state.items = await getRecentlyItems(this.currentSelect);
+				console.log(this.$store.state.items);
 				this.$store.state.matrixItems = [];
 
 				for (let index = 0; index < this.$store.state.items.length; index = index + 4) {

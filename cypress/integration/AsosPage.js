@@ -1,30 +1,34 @@
 export default class AsosPage {
 	changePreference() {
-		return cy.get("._3ap_GYr");
+		return cy.get('._3ap_GYr');
 	}
 
 	country() {
-		return cy.get("#country");
+		return cy.get('#country');
 	}
 
 	currency() {
-		return cy.get("#currency");
+		return cy.get('#currency');
 	}
 
 	saveCountryBtn() {
-		return cy.get("[data-testid=save-country-button]");
+		return cy.get('[data-testid=save-country-button]');
 	}
 
 	stylesFoundLabel() {
-		return cy.get("._2JQRAAs");
+		return cy.get('._2JQRAAs');
 	}
 
 	discountList() {
-		return cy.get("._1MVUcS8");
+		return cy.get('._1MVUcS8');
+	}
+
+	itemList() {
+		return cy.get('_3TqU78D');
 	}
 
 	loadMore() {
-		return cy.get("._39_qNys");
+		return cy.get('._39_qNys');
 	}
 
 	sortBySelect() {
@@ -32,6 +36,6 @@ export default class AsosPage {
 	}
 
 	selcetByNew() {
-		return cy.get("#plp_web_sort_whats_new");
+		return cy.get('#plp_web_sort_whats_new');
 	}
 }

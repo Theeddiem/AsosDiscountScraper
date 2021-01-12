@@ -23,7 +23,6 @@ export default {
 
 	created: async function() {
 		//this.$store.state.items = await getRecentlyItems();
-		console.log('store from grid', this.$store.state.items);
 		for (let index = 0; index < this.$store.state.items.length; index = index + this.colsPerRow) {
 			this.$store.state.matrixItems.push(this.$store.state.items.slice(index, index + this.colsPerRow));
 		}

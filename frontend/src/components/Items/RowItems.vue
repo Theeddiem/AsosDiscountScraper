@@ -1,6 +1,6 @@
 <template>
 	<div class="row">
-		<Item v-for="(items, i) in itemsArr" v-bind:key="i" :item="items"></Item>
+		<Item v-for="(elm, i) in itemsArr" v-bind:key="i" :item="elm"></Item>
 	</div>
 </template>
 
