@@ -12,9 +12,7 @@ import { getRecentlySearchedHistory } from '../../../databaseManager';
 import { getRecentlyItems } from '../../../databaseManager';
 
 export default {
-	props: {
-		msg: String
-	},
+	props: {},
 	data: function() {
 		return {
 			temp: [],
@@ -34,8 +32,8 @@ export default {
 		changeRecentlySearchedHandler: async function() {
 			if (this.currentSelect !== 'Recently Searched') {
 				const urlToPaste = this.temp[this.currentSelect];
-				console.log(this.temp[this.currentSelect]);
-				document.getElementById('link-scrape').value = urlToPaste;
+				this.$emit('updateParentUrl', urlToPaste);
+				console.log(this.currentSelect);
 				this.$store.state.items = await getRecentlyItems(this.currentSelect);
 				this.$store.state.matrixItems = [];
 
@@ -43,7 +41,7 @@ export default {
 					this.$store.state.matrixItems.push(this.$store.state.items.slice(index, index + 4));
 				}
 			} else {
-				document.getElementById('link-scrape').value = '';
+				this.$emit('updateParentUrl', '');
 			}
 		}
 	}

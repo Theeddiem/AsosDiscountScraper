@@ -20,5 +20,6 @@ body {
 	font-weight: 100;
 	padding-left: 30px;
 	padding-right: 30px;
+	margin-bottom: 50px;
 }
 </style>

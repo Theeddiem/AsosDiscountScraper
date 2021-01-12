@@ -3,7 +3,7 @@
 		<a v-bind:href="item.url">
 			{{ item.description }}
 			<span v-bind:style="item.orginalPrice > 450 ? 'background-color:  #ffccff' : ''" class="price-details">
-				{{ Math.floor(item.orginalPrice * 0.0428618) }}ILS -> {{ Math.floor(item.orginalPrice * 0.0428618) }}ILS - {{ item.discount }}%</span
+				{{ Math.floor(item.orginalPrice * 0.0428618) }}ILS -> {{ Math.floor(item.newPrice * 0.0428618) }}ILS - {{ item.discount }}%</span
 			>
 			<span class="discount-change"></span>
 			<img v-bind:src="item.imgUrl" />

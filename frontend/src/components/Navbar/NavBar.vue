@@ -1,26 +1,32 @@
 <template>
 	<div class="nav-bar">
-		<div class="top-nav-bar"><input id="link-scrape" class="btn btn-light" placeholder="Link To Scrape.." /> <button type="button" class="btn btn-success" id="submit-btn">Submit</button></div>
+		<div class="top-nav-bar">
+			<input id="link-scrape" class="btn btn-light" placeholder="Link To Scrape.." v-model="urlToScrape" />
+			<button type="button" class="btn btn-success" id="submit-btn" @click="scrapeUrlHandler">Submit</button>
+		</div>
 		<div class="bot-nav-bar">
 			<SortSelect></SortSelect>
-			<RecentlySearchedSelect></RecentlySearchedSelect>
-			<input id="search input" class="btn btn-light" placeholder="Search..." v-model="searchText" @input="searchHandler" />
+			<RecentlySearchedSelect @updateParentUrl="updateUrl"></RecentlySearchedSelect>
+			<input id="search-input" class="btn btn-light" placeholder="Search..." v-model="searchText" @input="searchHandler" />
+			<div class="loader" v-if="isLoaderVisible"></div>
 		</div>
-		<h1 id="styles-found" class="display-6" v-if="$store.state.items.length > 0">styles found {{ $store.state.items.length }}</h1>
+		<h1 id="styles-found" class="display-6" v-if="styelsFound() > 0">{{ styelsFound() }} styles</h1>
 	</div>
 </template>
 
 <script>
 import SortSelect from './Components/SortSelect.vue';
 import RecentlySearchedSelect from './Components/RecentlySearchedSelect.vue';
-
+import { scrapeData } from '../../databaseManager';
 export default {
 	components: { SortSelect, RecentlySearchedSelect },
 	data: function() {
 		return {
+			urlToScrape: '',
 			searchText: '',
 			tempMatirx: [],
-			colsPerRow: 4
+			colsPerRow: 4,
+			isLoaderVisible: false
 		};
 	},
 	mounted: function() {
@@ -31,11 +37,16 @@ export default {
 	},
 
 	methods: {
+		updateUrl: function(value) {
+			this.urlToScrape = value;
+		},
+
 		searchHandler: function() {
 			this.$store.state.matrixItems = this.tempMatirx.map(function(arr) {
 				return arr.slice();
 			});
-			let filterdArray = this.$store.state.items.filter(elm => {
+
+			const filterdArray = this.$store.state.items.filter(elm => {
 				return elm.description.toLowerCase().includes(this.searchText.toLowerCase());
 			});
 
@@ -43,6 +54,24 @@ export default {
 			for (let index = 0; index < filterdArray.length; index = index + this.colsPerRow) {
 				this.$store.state.matrixItems.push(filterdArray.slice(index, index + 4));
 			}
+		},
+		scrapeUrlHandler: async function() {
+			this.isLoaderVisible = true;
+			this.$store.state.matrixItems = [];
+			this.$store.state.items = await scrapeData(this.urlToScrape);
+			this.isLoaderVisible = false;
+
+			for (let index = 0; index < this.$store.state.items.length; index = index + 4) {
+				this.$store.state.matrixItems.push(this.$store.state.items.slice(index, index + 4));
+			}
+		},
+		styelsFound() {
+			let count = 0;
+			this.$store.state.matrixItems.forEach(arr => {
+				count += arr.length;
+			});
+
+			return count;
 		}
 	}
 };
@@ -84,5 +113,26 @@ export default {
 
 .display-6 {
 	text-align: center;
+}
+
+.loader {
+	border: 16px solid #f3f3f3; /* Light grey */
+	border-top: 16px solid #3498db; /* Blue */
+	border-radius: 50%;
+	width: 120px;
+	height: 120px;
+	animation: spin 2s linear infinite;
+	left: 50%;
+	top: 50%;
+	position: absolute;
+}
+
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
 }
 </style>
