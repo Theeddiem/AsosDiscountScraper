@@ -23,9 +23,11 @@ export default {
 	},
 
 	created: async function() {
+		console.log('recentlySearchedCreated');
 		this.temp = await getRecentlySearchedHistory();
 		this.recentlySearchedKeys = Object.keys(this.temp);
 		this.recentlySearchedValus = Object.values(this.temp);
+		this.$store.state.items = await getRecentlyItems(this.currentSelect);
 	},
 
 	methods: {

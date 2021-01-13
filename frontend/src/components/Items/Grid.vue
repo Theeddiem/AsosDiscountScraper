@@ -2,7 +2,7 @@
 	<div>
 		<div class="grid-container">
 			<div class="container-fluid">
-				<RowItems v-for="(itemsMat, i) in $store.state.matrixItems" v-bind:key="i" :itemsArr="itemsMat"></RowItems>
+				<RowItems v-for="(itemsMat, i) in matrixItems" v-bind:key="i" :itemsArr="itemsMat"></RowItems>
 			</div>
 		</div>
 	</div>
@@ -10,22 +10,23 @@
 
 <script>
 import RowItems from './RowItems';
+import { mapState } from 'vuex';
 import { getRecentlyItems } from '../../databaseManager';
 export default {
 	components: { RowItems },
 	props: {},
 	data: function() {
 		return {
-			searchText: '',
-			colsPerRow: 4
+			searchText: ''
+			// colsPerRow: 4
 		};
 	},
-
+	computed: mapState(['matrixItems']),
 	created: async function() {
-		//this.$store.state.items = await getRecentlyItems();
-		for (let index = 0; index < this.$store.state.items.length; index = index + this.colsPerRow) {
-			this.$store.state.matrixItems.push(this.$store.state.items.slice(index, index + this.colsPerRow));
-		}
+		await this.$store.dispatch('loadItems');
+		// for (let index = 0; index < this.$store.state.items.length; index = index + this.colsPerRow) {
+		// 	this.$store.state.matrixItems.push(this.$store.state.items.slice(index, index + this.colsPerRow));
+		// }
 	},
 	methods: {}
 };

@@ -12,13 +12,20 @@
 
 <script>
 export default {
-	props: {
-		msg: String
-	},
 	data: function() {
 		return {
 			currentSelect: 'Sort'
 		};
+	},
+
+	mounted: async function() {
+		// this.$store.state.items.sort((a, b) => (a.discount > b.discount ? -1 : b.discount > a.discount ? 1 : 0));
+
+		console.log(this.$store.state.items);
+		// for (let index = 0; index < this.$store.state.items.length; index = index + 4) {
+		// 	this.$store.state.matrixItems.push(this.$store.state.items.slice(index, index + 4));
+		// }
+		console.log('here');
 	},
 
 	methods: {

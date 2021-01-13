@@ -6,6 +6,7 @@ if (window.location.href.includes('localhost:80')) {
 export async function getRecentlyItems(value) {
 	try {
 		const response = await axios.get(`${dev}/api/scrape/saved/scrapedData/${value}`);
+		console.log('databaseM');
 		return response.data;
 	} catch (error) {
 		console.log(error);
