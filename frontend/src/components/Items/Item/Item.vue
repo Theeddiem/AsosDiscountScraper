@@ -5,7 +5,7 @@
 			<span v-bind:style="Math.floor(item.orginalPrice * turRate) > 450 ? 'background-color:  #ffccff' : ''" class="price-details">
 				{{ Math.floor(item.orginalPrice * turRate) }}ILS -> {{ Math.floor(item.newPrice * turRate) }}ILS - {{ item.discount }}%</span
 			>
-			<span class="price-details" v-bind:style="{ 'background-color': changeByBackgroundColor }"> {{ changeByText }} </span>
+			<span class="discount-improved" v-bind:style="{ 'background-color': changeByBackgroundColor }"> {{ changeByText }} </span>
 			<img v-bind:src="item.imgUrl" />
 		</a>
 	</div>
@@ -20,7 +20,6 @@ export default {
 		return {
 			turRate: 0.0428803,
 			changeByText: '',
-			showchangeByText: false,
 			changeByBackgroundColor: ''
 		};
 	},
@@ -57,6 +56,13 @@ a {
 
 a:link {
 	text-decoration: none;
+}
+
+.discount-improved {
+	font-size: medium;
+	color: black;
+	font-weight: bold;
+	margin-bottom: 5px;
 }
 
 .price-details {

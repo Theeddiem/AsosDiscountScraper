@@ -1,54 +1,47 @@
 <template>
 	<div class="custom-select-div">
 		<select class="form-select" id="select-order" v-model="currentSelect" @change="changeSortHandler">
-			<option value="Sort">Sort</option>
+			<option value="newest">Newest First</option>
 			<option value="discount">By Discount</option>
 			<option value="orginal">By Orginal Price</option>
 			<option value="discountImprov">By Discount Improvment</option>
-			<option value="newest">Newest First</option>
 		</select>
 	</div>
 </template>
 
 <script>
+import { mapMutations } from 'vuex';
+import { mapGetters } from 'vuex';
+
 export default {
 	data: function() {
 		return {
-			currentSelect: 'Sort'
+			currentSelect: 'newest'
 		};
 	},
-
-	mounted: async function() {
-		// this.$store.state.items.sort((a, b) => (a.discount > b.discount ? -1 : b.discount > a.discount ? 1 : 0));
-
-		console.log(this.$store.state.items);
-		// for (let index = 0; index < this.$store.state.items.length; index = index + 4) {
-		// 	this.$store.state.matrixItems.push(this.$store.state.items.slice(index, index + 4));
-		// }
-		console.log('here');
-	},
+	computed: { ...mapGetters(['items', 'matrixItems']) },
 
 	methods: {
+		...mapMutations(['SET_Items', 'SET_BackupItems', 'SET_Matrix']),
 		changeSortHandler: function() {
 			if (this.currentSelect !== 'Sort') {
+				if (this.currentSelect === 'newest') {
+					this.SET_Items(this.items.sort((a, b) => (a.orderId > b.orderId ? 1 : b.orderId > a.orderId ? -1 : 0)));
+					this.SET_BackupItems(this.items);
+				}
+
 				if (this.currentSelect === 'discount') {
-					this.$store.state.items.sort((a, b) => (a.discount > b.discount ? -1 : b.discount > a.discount ? 1 : 0));
+					this.SET_Items(this.items.sort((a, b) => (a.discount > b.discount ? -1 : b.discount > a.discount ? 1 : 0)));
+					this.SET_BackupItems(this.items);
 				}
 				if (this.currentSelect === 'orginal') {
-					this.$store.state.items.sort((a, b) => (a.orginalPrice > b.orginalPrice ? -1 : b.orginalPrice > a.orginalPrice ? 1 : 0));
+					this.SET_Items(this.items.sort((a, b) => (a.orginalPrice > b.orginalPrice ? -1 : b.orginalPrice > a.orginalPrice ? 1 : 0)));
+					this.SET_BackupItems(this.items);
 				}
 
 				if (this.currentSelect === 'discountImprov') {
-					this.$store.state.items.sort((a, b) => (a.changedBy > b.changedBy ? -1 : b.changedBy > a.changedBy ? 1 : 0));
-				}
-
-				if (this.currentSelect === 'newest') {
-					this.$store.state.items.sort((a, b) => (a.orderId > b.orderId ? 1 : b.orderId > a.orderId ? -1 : 0));
-				}
-				this.$store.state.matrixItems = [];
-
-				for (let index = 0; index < this.$store.state.items.length; index = index + 4) {
-					this.$store.state.matrixItems.push(this.$store.state.items.slice(index, index + 4));
+					this.SET_Items(this.items.sort((a, b) => (a.changedBy > b.changedBy ? -1 : b.changedBy > a.changedBy ? 1 : 0)));
+					this.SET_BackupItems(this.items);
 				}
 			}
 		}

@@ -10,7 +10,8 @@
 <script>
 import { getRecentlySearchedHistory } from '../../../databaseManager';
 import { getRecentlyItems } from '../../../databaseManager';
-
+import { mapMutations } from 'vuex';
+import { mapGetters } from 'vuex';
 export default {
 	props: {},
 	data: function() {
@@ -21,28 +22,24 @@ export default {
 			currentSelect: 'Recently Searched'
 		};
 	},
+	computed: { ...mapGetters(['items']) },
 
 	created: async function() {
 		console.log('recentlySearchedCreated');
 		this.temp = await getRecentlySearchedHistory();
 		this.recentlySearchedKeys = Object.keys(this.temp);
 		this.recentlySearchedValus = Object.values(this.temp);
-		this.$store.state.items = await getRecentlyItems(this.currentSelect);
+		//	this.$store.state.items = await getRecentlyItems(this.currentSelect);
 	},
 
 	methods: {
+		...mapMutations(['SET_Items']),
 		changeRecentlySearchedHandler: async function() {
 			if (this.currentSelect !== 'Recently Searched') {
 				const urlToPaste = this.temp[this.currentSelect];
 				this.$emit('updateParentUrl', urlToPaste);
 				console.log(this.currentSelect);
-				this.$store.state.items = await getRecentlyItems(this.currentSelect);
-				console.log(this.$store.state.items);
-				this.$store.state.matrixItems = [];
-
-				for (let index = 0; index < this.$store.state.items.length; index = index + 4) {
-					this.$store.state.matrixItems.push(this.$store.state.items.slice(index, index + 4));
-				}
+				this.SET_Items(await getRecentlyItems(this.currentSelect));
 			} else {
 				this.$emit('updateParentUrl', '');
 			}

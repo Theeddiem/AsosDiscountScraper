@@ -18,56 +18,46 @@
 import SortSelect from './Components/SortSelect.vue';
 import RecentlySearchedSelect from './Components/RecentlySearchedSelect.vue';
 import { scrapeData } from '../../databaseManager';
+import { mapMutations } from 'vuex';
+import { mapGetters } from 'vuex';
+
 export default {
 	components: { SortSelect, RecentlySearchedSelect },
 	data: function() {
 		return {
 			urlToScrape: '',
 			searchText: '',
-			tempMatirx: [],
-			colsPerRow: 4,
-			isLoaderVisible: false
+			isLoaderVisible: false,
+			tempArr: []
 		};
 	},
-	mounted: function() {
-		// mounted happens affter store creation
-		this.tempMatirx = this.$store.state.matrixItems.map(function(arr) {
-			return arr.slice();
-		});
+	computed: { ...mapGetters(['items', 'matrixItems', 'backupItems']) },
+	created: function() {
+		// this.tempArr = this.items;
 	},
 
 	methods: {
+		...mapMutations(['SET_Items']),
 		updateUrl: function(value) {
 			this.urlToScrape = value;
 		},
 
 		searchHandler: function() {
-			this.$store.state.matrixItems = this.tempMatirx.map(function(arr) {
-				return arr.slice();
-			});
-
-			const filterdArray = this.$store.state.items.filter(elm => {
+			this.SET_Items(this.backupItems);
+			const filterdArray = this.items.filter(elm => {
 				return elm.description.toLowerCase().includes(this.searchText.toLowerCase());
 			});
-
-			this.$store.state.matrixItems = [];
-			for (let index = 0; index < filterdArray.length; index = index + this.colsPerRow) {
-				this.$store.state.matrixItems.push(filterdArray.slice(index, index + 4));
-			}
+			this.SET_Items(filterdArray);
 		},
 		scrapeUrlHandler: async function() {
 			this.isLoaderVisible = true;
-			this.$store.state.matrixItems = [];
-			this.$store.state.items = await scrapeData(this.urlToScrape);
+			this.SET_Items({});
+			this.SET_Items(await scrapeData(this.urlToScrape));
 			this.isLoaderVisible = false;
-
-			for (let index = 0; index < this.$store.state.items.length; index = index + 4) {
-				this.$store.state.matrixItems.push(this.$store.state.items.slice(index, index + 4));
-			}
 		},
 		styelsFound() {
 			let count = 0;
-			this.$store.state.matrixItems.forEach(arr => {
+			this.matrixItems.forEach(arr => {
 				count += arr.length;
 			});
 

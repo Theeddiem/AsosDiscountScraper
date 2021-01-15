@@ -10,31 +10,30 @@
 
 <script>
 import RowItems from './RowItems';
-import { mapState } from 'vuex';
 import { getRecentlyItems } from '../../databaseManager';
+import { mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
+
 export default {
 	components: { RowItems },
 	props: {},
 	data: function() {
 		return {
 			searchText: ''
-			// colsPerRow: 4
 		};
 	},
-	computed: mapState(['matrixItems']),
-	created: async function() {
-		await this.$store.dispatch('loadItems');
-		// for (let index = 0; index < this.$store.state.items.length; index = index + this.colsPerRow) {
-		// 	this.$store.state.matrixItems.push(this.$store.state.items.slice(index, index + this.colsPerRow));
-		// }
+	methods: {
+		...mapActions(['loadItems'])
 	},
-	methods: {}
+	computed: {
+		...mapGetters(['matrixItems', 'items'])
+	},
+	created: async function() {
+		console.log('grid created ');
+		// await this.$store.dispatch('loadItems'); // other way to write it
+		await this.loadItems();
+	}
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-	margin: 40px 0 0;
-}
-</style>
+<style scoped></style>
