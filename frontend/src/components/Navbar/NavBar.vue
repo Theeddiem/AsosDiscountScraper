@@ -51,7 +51,7 @@ export default {
 		},
 		scrapeUrlHandler: async function() {
 			this.isLoaderVisible = true;
-			this.SET_Items({});
+			this.SET_Items([]);
 			this.SET_Items(await scrapeData(this.urlToScrape));
 			this.isLoaderVisible = false;
 		},

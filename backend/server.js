@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(cors());
 app.use('/api/scrape', scrape);
 
-const pathh = path.join(__dirname + '/../frontend/src');
+const pathh = path.join(__dirname + '/../frontend/dist');
 app.use(express.static(pathh));
 
 const PORT = 4000;

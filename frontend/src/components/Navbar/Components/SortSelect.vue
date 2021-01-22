@@ -4,6 +4,8 @@
 			<option value="newest">Newest First</option>
 			<option value="discount">By Discount</option>
 			<option value="orginal">By Orginal Price</option>
+			<option value="price high to low">By Price High To Low</option>
+			<option value="price low to high">By Price Low To High</option>
 			<option value="discountImprov">By Discount Improvment</option>
 		</select>
 	</div>
@@ -41,6 +43,16 @@ export default {
 
 				if (this.currentSelect === 'discountImprov') {
 					this.SET_Items(this.items.sort((a, b) => (a.changedBy > b.changedBy ? -1 : b.changedBy > a.changedBy ? 1 : 0)));
+					this.SET_BackupItems(this.items);
+				}
+
+				if (this.currentSelect === 'price high to low') {
+					this.SET_Items(this.items.sort((a, b) => (a.newPrice > b.newPrice ? -1 : b.newPrice > a.newPrice ? 1 : 0)));
+					this.SET_BackupItems(this.items);
+				}
+
+				if (this.currentSelect === 'price low to high') {
+					this.SET_Items(this.items.sort((a, b) => (a.newPrice > b.newPrice ? 1 : b.newPrice > a.newPrice ? -1 : 0)));
 					this.SET_BackupItems(this.items);
 				}
 			}

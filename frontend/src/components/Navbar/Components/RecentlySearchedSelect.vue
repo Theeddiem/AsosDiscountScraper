@@ -29,7 +29,7 @@ export default {
 		this.temp = await getRecentlySearchedHistory();
 		this.recentlySearchedKeys = Object.keys(this.temp);
 		this.recentlySearchedValus = Object.values(this.temp);
-		//	this.$store.state.items = await getRecentlyItems(this.currentSelect);
+		//	this.items = await getRecentlyItems(this.currentSelect);
 	},
 
 	methods: {

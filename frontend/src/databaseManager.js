@@ -25,6 +25,7 @@ export async function getRecentlySearchedHistory() {
 export async function scrapeData(url) {
 	try {
 		const response = await axios.get(`${dev}/api/scrape/${encodeURIComponent(url)}`);
+		console.log('hello');
 		return response.data;
 	} catch (error) {
 		console.log(error);

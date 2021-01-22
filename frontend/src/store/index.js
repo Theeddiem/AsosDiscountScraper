@@ -26,7 +26,6 @@ export default createStore({
 			for (let index = 0; index < state.items.length; index = index + 4) {
 				state.matrixItems.push(state.items.slice(index, index + 4));
 			}
-			//state.matrixItems = matrixItems;
 		},
 
 		SET_Matrix(state, items) {
