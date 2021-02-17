@@ -2,9 +2,7 @@ node_modules/
 cypress/videos
 cypress/screenshots
 cypress/reports
-/scrapedData
-backend/urlToScrape.txt
-backend/scrapedData/
 
 backend/urlToScrape.txt
+backend/scrapedData/
 backend/scrapedData/men - jackets-coats.json
