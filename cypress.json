@@ -1,5 +1,9 @@
 {
 	"defaultCommandTimeout": 60000,
 	"pageLoadTimeout": 500000,
-	"taskTimeout": 700000
+	"taskTimeout": 700000,
+	"screenshotOnRunFailure": true,
+	"video": true,
+	"videoCompression": 32,
+	"videosFolder": "cypress/videos"
 }

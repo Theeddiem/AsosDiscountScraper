@@ -31,18 +31,12 @@ describe('asos', () => {
 		// boots only 42
 		//let url = "https://www.asos.com/men/sale/shoes-trainers/cat/?cid=1935&ctaref=cat_header&currentpricerange=450-21490&refine=attribute_1047:8585|size_eu:2337";
 
-		// cy.visit(url);
-		// asosPage.changePreference().click();
-		// asosPage.country().select("Turkey");
-		// asosPage.currency().select("руб. RUB");
-		// asosPage.saveCountryBtn().click();
-
 		cy.setCookie('browseSizeSchema', 'EU');
 		cy.setCookie('browseCurrency', 'RUB');
 		cy.setCookie('browseCountry', 'TR');
 		cy.setCookie('browseLanguage', 'TR');
 		let reuslts = url.split('/');
-		let recentlySeacrhedFileName = `${reuslts[3]} - ${reuslts[5]}`;
+		let recentlySeacrhedFileName = `${reuslts[3]} - ${reuslts[4]}`;
 		cy.visit(url);
 		asosPage.sortBySelect().click();
 		asosPage.selcetByNew().click({ force: true });
@@ -71,38 +65,51 @@ describe('asos', () => {
 				for (let j = 0; j < elms.length; j++) {
 					const element = elms[j].children;
 					let orginalPrice = Math.floor(
+
 						element[2].innerText
 							.split('руб. ')[1]
 							.split('.')[0]
 							.replace(/[^0-9]/g, '')
 					);
-					let newPrice = Math.floor(
-						element[2].innerText
-							.split('руб. ')[2]
-							.split('.')[0]
-							.replace(/[^0-9]/g, '')
-					);
-					let discount = Math.floor(((orginalPrice - newPrice) / orginalPrice) * 100);
+					if (element[2].innerText
+						.split('руб. ')[2]
+						!== undefined) {
+						let newPrice = Math.floor(
+							element[2].innerText
+								.split('руб. ')[2]
+								.split('.')[0]
+								.replace(/[^0-9]/g, '')
+						);
+						let discount = Math.floor(((orginalPrice - newPrice) / orginalPrice) * 100);
 
-					if (discount > 30) {
-						let description = element[1].outerText;
-						let url = element[1].parentNode.href;
-						let imgUrl = element[0].lastChild.currentSrc;
-						//let url = element.parentElement.href
-						if (imgUrl === undefined) {
-							imgUrl = element[0].childNodes[0].currentSrc;
+						if (discount > 30) {
+							console.log(element[0].attributes[0].ownerElement.children);
+							console.log(element[0].attributes[0].ownerElement.children[0]);
+							console.log(element[0].attributes[0].ownerElement.children[0].nodeValue);
+							console.log(element[0].attributes[0].ownerElement.children[0].getAttributeNames());
+							console.log(element[0].attributes[0].ownerElement.children[0].attributes);
+
+							console.log("--------------------");
+
+							let description = element[1].outerText;
+							let url = element[1].parentNode.href;
+							let imgUrl = element[0].lastChild.currentSrc;
+							//let url = element.parentElement.href
+							if (imgUrl === undefined) {
+								imgUrl = element[0].childNodes[0].currentSrc;
+							}
+
+							arr.push({
+								description: description,
+								orginalPrice: orginalPrice,
+								newPrice: newPrice,
+								discount: discount,
+								url: url,
+								orderId: j,
+								imgUrl: imgUrl,
+								changedBy: 0,
+							});
 						}
-
-						arr.push({
-							description: description,
-							orginalPrice: orginalPrice,
-							newPrice: newPrice,
-							discount: discount,
-							url: url,
-							orderId: j,
-							imgUrl: imgUrl,
-							changedBy: 0,
-						});
 					}
 				}
 				const pathh = path.join(__dirname + `/../backend/scrapedData/${recentlySeacrhedFileName}.json`);
@@ -113,3 +120,5 @@ describe('asos', () => {
 		});
 	});
 });
+
+// [0].attriubs.ownerElement.      lastChild.currentSrc

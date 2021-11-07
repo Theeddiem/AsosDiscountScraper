@@ -24,7 +24,7 @@ export default class AsosPage {
 	}
 
 	itemList() {
-		return cy.get('_3TqU78D');
+		return cy.get('._3TqU78D')
 	}
 
 	loadMore() {
